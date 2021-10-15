@@ -17,10 +17,18 @@
 namespace VendAPI;
 
 spl_autoload_register(function ($class) {
-    list($namespace, $classname) = explode('\\', $class);
-    if ($namespace == 'VendAPI') {
-        include rtrim(__DIR__, '/').'/'.$classname . '.php';
+    // Don't interfere with other autoloaders
+    if (0 !== strpos($class, 'Vend_')) {
+        return;
     }
+
+    $path = __DIR__.'/'.str_replace('_', '/', $class).'.php';
+
+    if (!file_exists($path)) {
+        return;
+    }
+
+    require $path;
 });
 
 class VendAPI
