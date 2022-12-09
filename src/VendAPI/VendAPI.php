@@ -353,7 +353,10 @@ class VendAPI
                 // We've given the Vend API time to cool down - retry the original request:
                 return $this->_request($path, $data, $depage);
             }
-            throw new Exception("Error: Unexpected HTTP ".$this->requestr->http_code." result from API");
+            throw new Exception("Error: Unexpected HTTP "
+                . $this->requestr->http_code
+                . " result from API."
+                . isset($result->error) ? ($result->error. '.'. $result->details . '.') : '');
         }
 
         if ($depage && isset($result->pagination) && $result->pagination->page == 1) {
